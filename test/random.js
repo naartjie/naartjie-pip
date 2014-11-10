@@ -8,18 +8,34 @@ var _ = require('lodash'),
 
 describe('random/pin', function() {
 
+    // 2 dimensional matrix [length][sample]
+    var data = [];
+    before(function() {
+        _(20).times(function(length) {
+            data[length] = [];
+
+            _(100).times(function(i) {
+                data[length][i] = random.pin(length);
+            });
+        });
+    });
+
     describe('pin', function() {
 
-        it('should return the correct length pin', function() {
+        it('should return the correct length pin, digits only', function() {
 
-            for (var length = 1; length < 20; length++) {
-                for (var i = 0; i < 100; i++) {
-                    random.pin(length).should.have.length(length);
-                }
-            }
+            _(data).each(function(row, idx) {
+                var length = idx;
+                var reg = new RegExp('[0-9]{' + length + '}');
+
+                _(row).each(function(pin) {
+
+                    pin.should.match(reg);
+                });
+            });
         });
 
-        it('should have even distribution', function() {
+        it('should have an "even-ish" distribution', function() {
 
             var distribution = _(10).times(_.constant(0)).valueOf();
 
@@ -39,14 +55,14 @@ describe('random/pin', function() {
         });
     });
 
-    describe('digitFromByte', function() {
+    describe('digitFromByte, no crypto/randomness', function() {
 
-        it('should distribute 0..9 evenly, given a 0..255 byte spread', function() {
+        it('should distribute 0..9 perfectly, given a spread of 0..255 to work with', function() {
 
             var distribution = _(10).times(_.constant(0)).valueOf();
 
             _(256).times(function(i) {
-                var digit = random.digitFromByte(i);
+                var digit = random._digitFromByte(i);
                 if (digit) distribution[ digit ] += 1;
             });
 
