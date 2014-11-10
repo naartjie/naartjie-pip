@@ -1,9 +1,11 @@
 naartjie-pip
 ============
 
-random (literally?) utils for Node.JS
+
+## Random Utils for Node.JS
  - generate random PIN
- 
-validation:
+
+
+## validation:
  - ZA mobile / MSISDN numbers
  - email address
