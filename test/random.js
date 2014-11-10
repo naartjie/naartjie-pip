@@ -4,7 +4,7 @@ require('chai').should();
 
 var _ = require('lodash'),
     expect = require('chai').expect,
-    random = require('../lib/random');
+    random = require('../random');
 
 describe('random/pin', function() {
 

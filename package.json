@@ -1,7 +1,7 @@
 {
-  "name": "naartie-pip",
+  "name": "naartjie-pip",
+  "version": "0.0.1",
   "description": "utils for me by me",
-  "private": true,
   "dependencies": {
     "lodash": "^2.4.1",
     "moment": "^2.8.3"
@@ -12,6 +12,5 @@
   },
   "scripts": {
     "test": "node_modules/mocha/bin/mocha"
-  },
-  "version": "0.0.1"
+  }
 }
