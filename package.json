@@ -12,5 +12,6 @@
   },
   "scripts": {
     "test": "node_modules/mocha/bin/mocha"
-  }
+  },
+  "version": "0.0.1"
 }
