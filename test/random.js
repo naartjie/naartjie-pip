@@ -1,16 +1,15 @@
-'use strict';
+import {should, expect} from 'chai'
+import _ from 'lodash'
 
-require('chai').should();
+import random from '../src/random'
 
-var _ = require('lodash'),
-    expect = require('chai').expect,
-    random = require('../random');
+should()
 
-describe('random/pin', function() {
+describe('random/pin', () => {
 
     // 2 dimensional matrix [length][sample]
     var data = [];
-    before(function() {
+    before(() => {
         _(20).times(function(length) {
             data[length] = [];
 
@@ -20,9 +19,9 @@ describe('random/pin', function() {
         });
     });
 
-    describe('pin', function() {
+    describe('pin', () => {
 
-        it('should return the correct length pin, digits only', function() {
+        it('should return the correct length pin, digits only', () => {
 
             _(data).each(function(row, idx) {
                 var length = idx;
@@ -35,11 +34,11 @@ describe('random/pin', function() {
             });
         });
 
-        it('should have an "even-ish" distribution', function() {
+        it('should have an "even-ish" distribution', () => {
 
             var distribution = _(10).times(_.constant(0)).valueOf();
 
-            _(1000).times(function() {
+            _(1000).times(() => {
                 _(random.pin(10)).each(function(chr) {
                     distribution[chr] += 1;
                 });
@@ -55,9 +54,9 @@ describe('random/pin', function() {
         });
     });
 
-    describe('digitFromByte, no crypto/randomness', function() {
+    describe('digitFromByte, no crypto/randomness', () => {
 
-        it('should distribute 0..9 perfectly, given a spread of 0..255 to work with', function() {
+        it('should distribute 0..9 perfectly, given a spread of 0..255 to work with', () => {
 
             var distribution = _(10).times(_.constant(0)).valueOf();
 
