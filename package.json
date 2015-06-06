@@ -1,14 +1,21 @@
 {
   "name": "naartjie-pip",
   "version": "0.0.1",
-  "description": "utils for me by me",
+  "description": "random utils for random numbers, and validation",
+  "scripts": {
+    "build": "babel -d ./ ./src/",
+    "test": "mocha --compilers js:babel/register",
+    "test-watch": "mocha -w --compilers js:babel/register"
+  },
+  "main": "index.js",
   "dependencies": {
     "lodash": "3.8.0",
     "moment": "2.10.3"
   },
   "devDependencies": {
     "babel": "5.4.4",
-    "chai": "*",
-    "mocha": "*"
+    "chai": "2.3.0",
+    "dirty-chai": "1.2.1",
+    "mocha": "^2.2.5"
   }
 }
