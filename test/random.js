@@ -7,75 +7,62 @@ should()
 
 describe('random/pin', () => {
 
-    // 2 dimensional matrix [length][sample]
-    var data = [];
-    before(() => {
-        _(20).times(function(length) {
-            data[length] = [];
+  // 2 dimensional matrix [length][sample]
+  let data = []
+  before(() => {
+    _.times(20, length => {
+      data[length] = []
+      _.times(100, i => data[length][i] = random.pin(length))
+    })
+    expect(data).to.have.length(20)
+    expect(data[0].length).to.equal(100)
+  })
 
-            _(100).times(function(i) {
-                data[length][i] = random.pin(length);
-            });
-        });
-    });
+  describe('pin', () => {
 
-    describe('pin', () => {
+    it('should return the correct length pin, digits only', () => {
 
-        it('should return the correct length pin, digits only', () => {
+      _(data).each((row, idx) => {
+        const length = idx
+        const reg = new RegExp(`[0-9]{${length}}`)
 
-            _(data).each(function(row, idx) {
-                var length = idx;
-                var reg = new RegExp('[0-9]{' + length + '}');
+        _(row).each(pin => pin.should.match(reg)).value()
+      }).value()
+    })
 
-                _(row).each(function(pin) {
+    it(`should have an 'even-ish' distribution`, () => {
 
-                    pin.should.match(reg);
-                });
-            });
-        });
+      const numberOfDigits = 10
+      const distribution = _.times(numberOfDigits, _.constant(0))
 
-        it('should have an "even-ish" distribution', () => {
+      _.times(1000, () => {
+        _(random.pin(numberOfDigits)).each(chr => distribution[chr] += 1).value()
+      })
+      const avg = distribution.reduce((sum, num) => sum + num) / numberOfDigits
+      distribution.forEach(val => val.should.be.within(avg * 0.9, avg * 1.1))
+    })
+  })
 
-            var distribution = _(10).times(_.constant(0)).valueOf();
+  describe('digitFromByte, no crypto/randomness', () => {
 
-            _(1000).times(() => {
-                _(random.pin(10)).each(function(chr) {
-                    distribution[chr] += 1;
-                });
-            });
+    it('should distribute 0..9 perfectly, given a spread of 0..255 to work with', () => {
 
-            var avg = _(distribution).reduce(function(sum, num) {
-                return sum + num;
-            }) / 10;
+      const numberOfDigits = 10
+      const distribution = _(numberOfDigits).times(_.constant(0)).value()
 
-            _(distribution).each(function(val) {
-                val.should.be.within(avg * 0.9, avg * 1.1);
-            });
-        });
-    });
+      _.times(256, i => {
+        const digit = random._digitFromByte(i)
+        if (digit) distribution[digit] += 1
+      })
 
-    describe('digitFromByte, no crypto/randomness', () => {
+      // either
+      distribution.should.have.length(numberOfDigits)
 
-        it('should distribute 0..9 perfectly, given a spread of 0..255 to work with', () => {
+      // or, not sure which one I prefer
+      expect(distribution).to.have.length(numberOfDigits);
 
-            var distribution = _(10).times(_.constant(0)).valueOf();
-
-            _(256).times(function(i) {
-                var digit = random._digitFromByte(i);
-                if (digit) distribution[ digit ] += 1;
-            });
-
-            // either
-            distribution.should.have.length(10);
-
-            // or, not sure which one I prefer
-            expect(distribution).to.have.length(10);
-
-            var firstVal = distribution[0];
-            _(distribution).each(function(val) {
-                expect(val).to.equal(firstVal);
-            });
-
-        });
-    });
-});
+      const [firstVal] = distribution
+      distribution.forEach(val => expect(val).to.equal(firstVal))
+    })
+  })
+})
