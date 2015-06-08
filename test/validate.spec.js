@@ -6,8 +6,7 @@ import {
   isValidMsisdn,
   isValidMobile,
   isValidEmail,
-  isValidIsoDate,
-  isoToHuman
+  isValidIsoDate
 } from '../src/validate'
 
 describe('exports', () => {
@@ -22,7 +21,6 @@ describe('exports', () => {
     expect(validate.isValidMobile).to.equal(isValidMobile)
     expect(validate.isValidEmail).to.equal(isValidEmail)
     expect(validate.isValidIsoDate).to.equal(isValidIsoDate)
-    expect(validate.isoToHuman).to.equal(isoToHuman)
   })
 })
 
@@ -139,13 +137,6 @@ describe('date validation', () => {
 
   it(`should fail a 'distant' date in the future`, () => {
     expect(isValidIsoDate('2200-01-01')).to.be.false('2200-01-01')
-  })
-})
-
-describe('date conversion', () => {
-  it('should convert iso to human readable format', () => {
-    expect(isoToHuman('2004-12-04')).to.equal('04/12/2004')
-    expect(isoToHuman('1981-10-31')).to.equal('31/10/1981')
   })
 })
 

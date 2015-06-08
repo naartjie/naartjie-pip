@@ -13,20 +13,12 @@ export function isValidIsoDate(date) {
   return date === check.toISOString().slice(0, 10);
 }
 
-export function isoToHuman(date) {
-  if (!date) return undefined
-
-  const [year, month, day] = date.split('-')
-  return `${day}/${month}/${year}`
-}
-
 // extra exports so different import options work
 
 validate.isValidMsisdn = isValidMsisdn
 validate.isValidMobile = isValidMobile
 validate.isValidEmail = isValidEmail
 validate.isValidIsoDate = isValidIsoDate
-validate.isoToHuman = isoToHuman
 
 function validate({msisdn, mobile}) {
 
