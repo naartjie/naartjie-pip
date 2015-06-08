@@ -24,34 +24,20 @@ function validate({msisdn, mobile}) {
 
   if (!(mobile ^ msisdn)) throw Error(`please provide one of 'mobile' or 'msisdn' to validate`)
 
-  let isValid
-
-  if (mobile) {
-    if (isValidMobile(mobile)) {
-      isValid = true
-      msisdn = toMsisdn(mobile)
-      mobile = toMobile(mobile)
-    } else {
-      isValid = false
-      msisdn = undefined
-      mobile = undefined
-    }
-  } else {
-    if (isValidMsisdn(msisdn)) {
-      isValid = true
-      msisdn = msisdn
-      mobile = toMobile(msisdn)
-    } else {
-      isValid = false
-      msisdn = undefined
-      mobile = undefined
-    }
+  if (mobile && isValidMobile(mobile)) return {
+    isValid: true,
+    msisdn: toMsisdn(mobile),
+    mobile: toMobile(mobile),
   }
 
-  return {
-    isValid,
-    msisdn,
-    mobile,
+  else if (isValidMsisdn(msisdn)) return {
+    isValid: true,
+    msisdn: msisdn,
+    mobile: toMobile(msisdn),
+  }
+
+  else return {
+    isValid: false
   }
 }
 
