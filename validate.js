@@ -4,6 +4,7 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 exports.isValidIsoDate = isValidIsoDate;
+exports.isValidHumanDate = isValidHumanDate;
 
 function _slicedToArray(arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }
 
@@ -23,7 +24,7 @@ var isValidEmail = function isValidEmail(email) {
 exports.isValidEmail = isValidEmail;
 
 function isValidIsoDate(date) {
-  if (!pattern.isoDate.test(date)) return false;
+  if (!valid('isoDate')(date)) return false;
 
   var _date$split = date.split('-');
 
@@ -38,12 +39,38 @@ function isValidIsoDate(date) {
   return date === check.toISOString().slice(0, 10);
 }
 
+function isValidHumanDate(date) {
+
+  if (!valid('humanDate')(date)) return false;
+
+  var _date$split3 = date.split('/');
+
+  var _date$split32 = _slicedToArray(_date$split3, 3);
+
+  var day = _date$split32[0];
+  var month = _date$split32[1];
+  var year = _date$split32[2];
+
+  var check = new Date(year, month - 1, day, 12);
+
+  day = pad(2, check.getDate());
+  month = pad(2, check.getMonth() + 1);
+  year = pad(4, check.getFullYear());
+
+  return date === '' + day + '/' + month + '/' + year;
+}
+
+function pad(len, str) {
+  return ('0000000000' + str).slice(-len);
+}
+
 // extra exports so different import options work
 
 validate.isValidMsisdn = isValidMsisdn;
 validate.isValidMobile = isValidMobile;
 validate.isValidEmail = isValidEmail;
 validate.isValidIsoDate = isValidIsoDate;
+validate.isValidHumanDate = isValidHumanDate;
 
 function validate(_ref) {
   var msisdn = _ref.msisdn;
@@ -51,34 +78,15 @@ function validate(_ref) {
 
   if (!(mobile ^ msisdn)) throw Error('please provide one of \'mobile\' or \'msisdn\' to validate');
 
-  var isValid = undefined;
-
-  if (mobile) {
-    if (isValidMobile(mobile)) {
-      isValid = true;
-      msisdn = toMsisdn(mobile);
-      mobile = toMobile(mobile);
-    } else {
-      isValid = false;
-      msisdn = undefined;
-      mobile = undefined;
-    }
-  } else {
-    if (isValidMsisdn(msisdn)) {
-      isValid = true;
-      msisdn = msisdn;
-      mobile = toMobile(msisdn);
-    } else {
-      isValid = false;
-      msisdn = undefined;
-      mobile = undefined;
-    }
-  }
-
-  return {
-    isValid: isValid,
+  if (mobile && isValidMobile(mobile)) return {
+    isValid: true,
+    msisdn: toMsisdn(mobile),
+    mobile: toMobile(mobile) };else if (isValidMsisdn(msisdn)) return {
+    isValid: true,
     msisdn: msisdn,
-    mobile: mobile };
+    mobile: toMobile(msisdn) };else return {
+    isValid: false
+  };
 }
 
 var toMsisdn = function toMsisdn(validMobile) {
@@ -103,6 +111,9 @@ var pattern = {
 
   // YYYY-MM-DD, with years limited to 1900-2100
   isoDate: /^(19|20|21)\d\d-[0|1]\d-[0-3]\d$/,
+
+  // DD-MM-YYYY
+  humanDate: /^[0-3]\d\/[0|1]\d\/(19|20|21)\d\d$/,
 
   // http://stackoverflow.com/questions/46155/validate-email-address-in-javascript
   email: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/ };

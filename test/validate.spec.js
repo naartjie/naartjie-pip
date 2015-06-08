@@ -6,7 +6,8 @@ import {
   isValidMsisdn,
   isValidMobile,
   isValidEmail,
-  isValidIsoDate
+  isValidIsoDate,
+  isValidHumanDate
 } from '../src/validate'
 
 describe('exports', () => {
@@ -21,6 +22,7 @@ describe('exports', () => {
     expect(validate.isValidMobile).to.equal(isValidMobile)
     expect(validate.isValidEmail).to.equal(isValidEmail)
     expect(validate.isValidIsoDate).to.equal(isValidIsoDate)
+    expect(validate.isValidHumanDate).to.equal(isValidHumanDate)
   })
 })
 
@@ -117,7 +119,7 @@ describe('email validation', () => {
   })
 })
 
-describe('date validation', () => {
+describe('ISO date validation', () => {
 
   it('should pass a valid date', () => {
     expect(isValidIsoDate('1978-05-31')).to.be.true()
@@ -137,6 +139,16 @@ describe('date validation', () => {
 
   it(`should fail a 'distant' date in the future`, () => {
     expect(isValidIsoDate('2200-01-01')).to.be.false('2200-01-01')
+  })
+})
+
+describe(`'human' date validation`, () => {
+  it('should parse a valid date', () => {
+    expect(isValidHumanDate('31/05/1978')).to.be.true('31/05/1978')
+  })
+
+  it('does not yet parse a date without zero padding', () => {
+    expect(isValidHumanDate('31/5/1978')).to.be.false('31/5/1978')
   })
 })
 
