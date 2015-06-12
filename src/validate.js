@@ -39,9 +39,14 @@ validate.isValidEmail = isValidEmail
 validate.isValidIsoDate = isValidIsoDate
 validate.isValidHumanDate = isValidHumanDate
 
-function validate({msisdn, mobile}) {
+/**
+ * @param {msisdn, mobile}
+ * @returns {isValid, msisdn, mobile}
+ */
+export function validate({mobile, msisdn}) {
 
-  if (!(mobile ^ msisdn)) throw Error(`please provide one of 'mobile' or 'msisdn' to validate`)
+  if (mobile && msisdn) throw Error(`please provide only one, 'mobile' or 'msisdn'`)
+  if (!mobile && !msisdn) return {isValid: false}
 
   if (mobile && isValidMobile(mobile)) return {
     isValid: true,

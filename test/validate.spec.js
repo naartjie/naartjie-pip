@@ -90,21 +90,15 @@ describe('validate(): parameters', () => {
   it('should throw when both msisdn and mobile are given', (done) => {
 
     try {
-      validate({mobile: '', msisdn: ''})
+      validate({mobile: '1', msisdn: '2'})
       done(Error('should have thrown'))
     } catch (e) {
       done()
     }
   })
 
-  it('should throw when neither msisdn and mobile are given', (done) => {
-
-    try {
-      validate({noMobile: '', noMsisdn: ''})
-      done(Error('should have thrown'))
-    } catch(e) {
-      done()
-    }
+  it('should return invalid when neither msisdn and mobile are given', () => {
+    expect(validate({noMobile: '', noMsisdn: ''})).to.eql({isValid: false})
   })
 })
 
