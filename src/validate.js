@@ -32,7 +32,7 @@ function pad(len, str) {
 }
 
 // extra exports so different import options work
-
+validate.sameNumbers = sameNumbers
 validate.isValidMsisdn = isValidMsisdn
 validate.isValidMobile = isValidMobile
 validate.isValidEmail = isValidEmail
@@ -63,6 +63,10 @@ export function validate({mobile, msisdn}) {
   else return {
     isValid: false
   }
+}
+
+export function sameNumbers({mobile, msisdn}) {
+  return validate({mobile}).msisdn === msisdn
 }
 
 const toMsisdn = (validMobile) => `27${validMobile.slice(-9)}`

@@ -7,7 +7,8 @@ import {
   isValidMobile,
   isValidEmail,
   isValidIsoDate,
-  isValidHumanDate
+  isValidHumanDate,
+  sameNumbers
 } from '../src/validate'
 
 describe('exports', () => {
@@ -23,6 +24,7 @@ describe('exports', () => {
     expect(validate.isValidEmail).to.equal(isValidEmail)
     expect(validate.isValidIsoDate).to.equal(isValidIsoDate)
     expect(validate.isValidHumanDate).to.equal(isValidHumanDate)
+    expect(validate.sameNumbers).to.equal(sameNumbers)
   })
 })
 
@@ -44,6 +46,21 @@ describe('mobile number validation', () => {
     [undefined, null, ''].forEach(x => expect(isValidMobile(x)).to.be.false())
   })
 })
+
+describe('sameNumbers()', () => {
+  it('should recognise 2 numbers are the same in a different format', () => {
+    expect(sameNumbers({msisdn: '27849266611', mobile: '0849266611'})).to.be.true()
+  })
+
+  it('should return false for different numbers', () => {
+    expect(sameNumbers({msisdn: '27849266611', mobile: '278492666111'})).to.be.false()
+  })
+
+  it('should return false for a botched up msisdn', () => {
+    expect(sameNumbers({msisdn: '0849266611', mobile: '27849266611'})).to.be.false()
+  })
+})
+
 
 describe('msisdn number validation', () => {
 
