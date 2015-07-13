@@ -12,6 +12,7 @@ exports.isValidHumanDate = isValidHumanDate;
  */
 exports.validate = validate;
 exports.sameNumbers = sameNumbers;
+exports.isNamibian = isNamibian;
 exports.toMsisdn = toMsisdn;
 exports.toMobile = toMobile;
 
@@ -105,15 +106,19 @@ function sameNumbers(_ref2) {
   return validate({ mobile: mobile }).msisdn === msisdn;
 }
 
+function isNamibian(mobile) {
+  return mobileNamPattern.test(mobile);
+}
+
 function toMsisdn(validMobile) {
-  if (msisdnNamPattern.test(validMobile)) {
-    return '264' + validMobile.slice(-9);
+  if (isNamibian(validMobile)) {
+    return '264' + validMobile.slice(-8);
   }
   return '27' + validMobile.slice(-9);
 }
 
 function toMobile(validMsisdn) {
-  if (mobileNamPattern.test(validMsisdn)) {
+  if (isNamibian(validMsisdn)) {
     return '0' + validMsisdn.slice(-8);
   }
   return '0' + validMsisdn.slice(-9);
@@ -128,8 +133,6 @@ var valid = function valid(type) {
 // normalized MSISDN format: 27849266611
 var msisdnZA = '27[6-8][0-9]{8}';
 var msisdnNam = '264(60|81|83|85)[0-9]{6}';
-
-var msisdnNamPattern = new RegExp(msisdnNam);
 
 // any format a human might write (excluding brackets and spaces)
 // 0849266611 / +278492666111 / 0027 etc etc
