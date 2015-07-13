@@ -12,6 +12,8 @@ exports.isValidHumanDate = isValidHumanDate;
  */
 exports.validate = validate;
 exports.sameNumbers = sameNumbers;
+exports.toMsisdn = toMsisdn;
+exports.toMobile = toMobile;
 
 function _slicedToArray(arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }
 
@@ -103,12 +105,20 @@ function sameNumbers(_ref2) {
   return validate({ mobile: mobile }).msisdn === msisdn;
 }
 
-var toMsisdn = function toMsisdn(validMobile) {
+function toMsisdn(validMobile) {
+  if (msisdnNamPattern.test(validMobile)) {
+    return '264' + validMobile.slice(-9);
+  }
   return '27' + validMobile.slice(-9);
-};
-var toMobile = function toMobile(validMsisdn) {
+}
+
+function toMobile(validMsisdn) {
+  if (mobileNamPattern.test(validMsisdn)) {
+    return '0' + validMsisdn.slice(-8);
+  }
   return '0' + validMsisdn.slice(-9);
-};
+}
+
 var valid = function valid(type) {
   return function (entity) {
     return pattern[type].test(entity);
@@ -119,10 +129,14 @@ var valid = function valid(type) {
 var msisdnZA = '27[6-8][0-9]{8}';
 var msisdnNam = '264(60|81|83|85)[0-9]{6}';
 
+var msisdnNamPattern = new RegExp(msisdnNam);
+
 // any format a human might write (excluding brackets and spaces)
 // 0849266611 / +278492666111 / 0027 etc etc
 var mobileZA = '(\\+?(00)?270?|0)[6-8][0-9]{8}';
 var mobileNam = '(\\+?(00)?2640?|0)(60|81|83|85)[0-9]{6}';
+
+var mobileNamPattern = new RegExp(mobileNam);
 
 var pattern = {
   msisdn: new RegExp('^(' + msisdnZA + '|' + msisdnNam + ')$'),

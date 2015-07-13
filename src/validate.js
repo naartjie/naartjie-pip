@@ -69,18 +69,34 @@ export function sameNumbers({mobile, msisdn}) {
   return validate({mobile}).msisdn === msisdn
 }
 
-const toMsisdn = (validMobile) => `27${validMobile.slice(-9)}`
-const toMobile = (validMsisdn) => `0${validMsisdn.slice(-9)}`
+export function toMsisdn(validMobile) {
+  if (msisdnNamPattern.test(validMobile)) {
+    return `264${validMobile.slice(-9)}`
+  }
+  return `27${validMobile.slice(-9)}`
+}
+
+export function toMobile(validMsisdn) {
+  if (mobileNamPattern.test(validMsisdn)) {
+    return `0${validMsisdn.slice(-8)}`
+  }
+  return `0${validMsisdn.slice(-9)}`
+}
+
 const valid = (type) => (entity) => pattern[type].test(entity)
 
 // normalized MSISDN format: 27849266611
 const msisdnZA = '27[6-8][0-9]{8}'
 const msisdnNam = '264(60|81|83|85)[0-9]{6}'
 
+const msisdnNamPattern = new RegExp(msisdnNam)
+
 // any format a human might write (excluding brackets and spaces)
 // 0849266611 / +278492666111 / 0027 etc etc
 const mobileZA = '(\\+?(00)?270?|0)[6-8][0-9]{8}'
 const mobileNam = '(\\+?(00)?2640?|0)(60|81|83|85)[0-9]{6}'
+
+const mobileNamPattern = new RegExp(mobileNam)
 
 const pattern = {
   msisdn: new RegExp(`^(${msisdnZA}|${msisdnNam})$`),
