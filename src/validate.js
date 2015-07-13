@@ -69,15 +69,19 @@ export function sameNumbers({mobile, msisdn}) {
   return validate({mobile}).msisdn === msisdn
 }
 
+export function isNamibian(mobile) {
+  return mobileNamPattern.test(mobile)
+}
+
 export function toMsisdn(validMobile) {
-  if (msisdnNamPattern.test(validMobile)) {
-    return `264${validMobile.slice(-9)}`
+  if (isNamibian(validMobile)) {
+    return `264${validMobile.slice(-8)}`
   }
   return `27${validMobile.slice(-9)}`
 }
 
 export function toMobile(validMsisdn) {
-  if (mobileNamPattern.test(validMsisdn)) {
+  if (isNamibian(validMsisdn)) {
     return `0${validMsisdn.slice(-8)}`
   }
   return `0${validMsisdn.slice(-9)}`
@@ -88,8 +92,6 @@ const valid = (type) => (entity) => pattern[type].test(entity)
 // normalized MSISDN format: 27849266611
 const msisdnZA = '27[6-8][0-9]{8}'
 const msisdnNam = '264(60|81|83|85)[0-9]{6}'
-
-const msisdnNamPattern = new RegExp(msisdnNam)
 
 // any format a human might write (excluding brackets and spaces)
 // 0849266611 / +278492666111 / 0027 etc etc
