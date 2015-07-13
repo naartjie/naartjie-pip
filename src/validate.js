@@ -73,13 +73,18 @@ const toMsisdn = (validMobile) => `27${validMobile.slice(-9)}`
 const toMobile = (validMsisdn) => `0${validMsisdn.slice(-9)}`
 const valid = (type) => (entity) => pattern[type].test(entity)
 
-const pattern = {
-  // standard MSISDN format: 27849266611
-  msisdn: /^27[6-8][0-9]{8}$/,
+// normalized MSISDN format: 27849266611
+const msisdnZA = '27[6-8][0-9]{8}'
+const msisdnNam = '264(60|81|83|85)[0-9]{6}'
 
-  // any format a human might write (excluding brackets and spaces)
-  // 0849266611 / +278492666111 / 0027 etc etc
-  mobile: /^(\+?(00)?270?|0)[6-8][0-9]{8}$/,
+// any format a human might write (excluding brackets and spaces)
+// 0849266611 / +278492666111 / 0027 etc etc
+const mobileZA = '(\\+?(00)?270?|0)[6-8][0-9]{8}'
+const mobileNam = '(\\+?(00)?2640?|0)(60|81|83|85)[0-9]{6}'
+
+const pattern = {
+  msisdn: new RegExp(`^(${msisdnZA}|${msisdnNam})$`),
+  mobile: new RegExp(`^(${mobileZA}|${mobileNam})$`),
 
   // YYYY-MM-DD, with years limited to 1900-2100
   isoDate: /^(19|20|21)\d\d-[0|1]\d-[0-3]\d$/,

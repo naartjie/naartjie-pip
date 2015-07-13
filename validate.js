@@ -100,7 +100,7 @@ function sameNumbers(_ref2) {
   var mobile = _ref2.mobile;
   var msisdn = _ref2.msisdn;
 
-  return validate({ mobile: mobile }).msisdn === this.props.msisdn;
+  return validate({ mobile: mobile }).msisdn === msisdn;
 }
 
 var toMsisdn = function toMsisdn(validMobile) {
@@ -115,13 +115,18 @@ var valid = function valid(type) {
   };
 };
 
-var pattern = {
-  // standard MSISDN format: 27849266611
-  msisdn: /^27[6-8][0-9]{8}$/,
+// normalized MSISDN format: 27849266611
+var msisdnZA = '27[6-8][0-9]{8}';
+var msisdnNam = '264(60|81|83|85)[0-9]{6}';
 
-  // any format a human might write (excluding brackets and spaces)
-  // 0849266611 / +278492666111 / 0027 etc etc
-  mobile: /^(\+?(00)?270?|0)[6-8][0-9]{8}$/,
+// any format a human might write (excluding brackets and spaces)
+// 0849266611 / +278492666111 / 0027 etc etc
+var mobileZA = '(\\+?(00)?270?|0)[6-8][0-9]{8}';
+var mobileNam = '(\\+?(00)?2640?|0)(60|81|83|85)[0-9]{6}';
+
+var pattern = {
+  msisdn: new RegExp('^(' + msisdnZA + '|' + msisdnNam + ')$'),
+  mobile: new RegExp('^(' + mobileZA + '|' + mobileNam + ')$'),
 
   // YYYY-MM-DD, with years limited to 1900-2100
   isoDate: /^(19|20|21)\d\d-[0|1]\d-[0-3]\d$/,
