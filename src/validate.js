@@ -98,7 +98,7 @@ const msisdnNam = '264(60|81|83|85)[0-9]{6}'
 const mobileZA = '(\\+?(00)?270?|0)[6-8][0-9]{8}'
 const mobileNam = '(\\+?(00)?2640?|0)(60|81|83|85)[0-9]{6}'
 
-const mobileNamPattern = new RegExp(mobileNam)
+const mobileNamPattern = new RegExp(`^${mobileNam}$`)
 
 const pattern = {
   msisdn: new RegExp(`^(${msisdnZA}|${msisdnNam})$`),

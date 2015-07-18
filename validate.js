@@ -139,7 +139,7 @@ var msisdnNam = '264(60|81|83|85)[0-9]{6}';
 var mobileZA = '(\\+?(00)?270?|0)[6-8][0-9]{8}';
 var mobileNam = '(\\+?(00)?2640?|0)(60|81|83|85)[0-9]{6}';
 
-var mobileNamPattern = new RegExp(mobileNam);
+var mobileNamPattern = new RegExp('^' + mobileNam + '$');
 
 var pattern = {
   msisdn: new RegExp('^(' + msisdnZA + '|' + msisdnNam + ')$'),
