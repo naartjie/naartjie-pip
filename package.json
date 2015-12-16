@@ -1,6 +1,6 @@
 {
   "name": "naartjie-pip",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "random utils for random numbers, and validation",
   "scripts": {
     "build": "babel -d ./ ./src/",
