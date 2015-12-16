@@ -69,21 +69,11 @@ export function sameNumbers({mobile, msisdn}) {
   return validate({mobile}).msisdn === msisdn
 }
 
-export function isNamibian(mobile) {
-  return mobileNamPattern.test(mobile)
-}
-
 export function toMsisdn(validMobile) {
-  if (isNamibian(validMobile)) {
-    return `264${validMobile.slice(-8)}`
-  }
   return `27${validMobile.slice(-9)}`
 }
 
 export function toMobile(validMsisdn) {
-  if (isNamibian(validMsisdn)) {
-    return `0${validMsisdn.slice(-8)}`
-  }
   return `0${validMsisdn.slice(-9)}`
 }
 
@@ -91,18 +81,14 @@ const valid = (type) => (entity) => pattern[type].test(entity)
 
 // normalized MSISDN format: 27849266611
 const msisdnZA = '27[6-8][0-9]{8}'
-const msisdnNam = '264(60|81|83|85)[0-9]{6}'
 
 // any format a human might write (excluding brackets and spaces)
 // 0849266611 / +278492666111 / 0027 etc etc
 const mobileZA = '(\\+?(00)?270?|0)[6-8][0-9]{8}'
-const mobileNam = '(\\+?(00)?2640?|0)(60|81|83|85)[0-9]{6}'
-
-const mobileNamPattern = new RegExp(`^${mobileNam}$`)
 
 const pattern = {
-  msisdn: new RegExp(`^(${msisdnZA}|${msisdnNam})$`),
-  mobile: new RegExp(`^(${mobileZA}|${mobileNam})$`),
+  msisdn: new RegExp(`^(${msisdnZA})$`),
+  mobile: new RegExp(`^(${mobileZA})$`),
 
   // YYYY-MM-DD, with years limited to 1900-2100
   isoDate: /^(19|20|21)\d\d-[0|1]\d-[0-3]\d$/,

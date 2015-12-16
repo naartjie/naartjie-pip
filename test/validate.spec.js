@@ -166,16 +166,15 @@ describe(`'human' date validation`, () => {
 const valid = {
   msisdns: [
     '27849266611',
-    '26460123456', // Namibia
   ],
   mobiles: [
     '0849266611',
+    '0833249557',
     '+27849266611',
     '270849266611',
+    '270833249557',
     '0027849266611',
     '+0027849266611',
-    '+264060123456',  // Namibia
-    '00264060123456', // Namibia
   ],
 }
 
@@ -185,8 +184,6 @@ const invalid = {
     '278492666111', // too long
     '27851111111',  // wrong prefix
     '27891111111',  // wrong prefix
-    '2646012345',   // Namibia - too short
-    '264601234567', // Namibia - too long
   ],
   mobiles: [
     '084926661',      // too short
@@ -194,6 +191,6 @@ const invalid = {
     '27(0)849266611', // bracket
     'a0027849266611', // special char
     '00027849266611', // too many 0's at the start
-    '0026460123',     // Namibia
+    '0026460123',
   ],
 }
