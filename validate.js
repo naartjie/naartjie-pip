@@ -3,21 +3,15 @@
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
+
+var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
+
 exports.isValidIsoDate = isValidIsoDate;
 exports.isValidHumanDate = isValidHumanDate;
-
-/**
- * @param {msisdn, mobile}
- * @returns {isValid, msisdn, mobile}
- */
 exports.validate = validate;
 exports.sameNumbers = sameNumbers;
-exports.isNamibian = isNamibian;
 exports.toMsisdn = toMsisdn;
 exports.toMobile = toMobile;
-
-function _slicedToArray(arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }
-
 exports['default'] = validate;
 var isValidMsisdn = function isValidMsisdn(msisdn) {
   return valid('msisdn')(msisdn);
@@ -67,7 +61,7 @@ function isValidHumanDate(date) {
   month = pad(2, check.getMonth() + 1);
   year = pad(4, check.getFullYear());
 
-  return date === '' + day + '/' + month + '/' + year;
+  return date === day + '/' + month + '/' + year;
 }
 
 function pad(len, str) {
@@ -81,6 +75,12 @@ validate.isValidMobile = isValidMobile;
 validate.isValidEmail = isValidEmail;
 validate.isValidIsoDate = isValidIsoDate;
 validate.isValidHumanDate = isValidHumanDate;
+
+/**
+ * @param {msisdn, mobile}
+ * @returns {isValid, msisdn, mobile}
+ */
+
 function validate(_ref) {
   var mobile = _ref.mobile;
   var msisdn = _ref.msisdn;
@@ -91,10 +91,12 @@ function validate(_ref) {
   if (mobile && isValidMobile(mobile)) return {
     isValid: true,
     msisdn: toMsisdn(mobile),
-    mobile: toMobile(mobile) };else if (isValidMsisdn(msisdn)) return {
+    mobile: toMobile(mobile)
+  };else if (isValidMsisdn(msisdn)) return {
     isValid: true,
     msisdn: msisdn,
-    mobile: toMobile(msisdn) };else return {
+    mobile: toMobile(msisdn)
+  };else return {
     isValid: false
   };
 }
@@ -106,21 +108,11 @@ function sameNumbers(_ref2) {
   return validate({ mobile: mobile }).msisdn === msisdn;
 }
 
-function isNamibian(mobile) {
-  return mobileNamPattern.test(mobile);
-}
-
 function toMsisdn(validMobile) {
-  if (isNamibian(validMobile)) {
-    return '264' + validMobile.slice(-8);
-  }
   return '27' + validMobile.slice(-9);
 }
 
 function toMobile(validMsisdn) {
-  if (isNamibian(validMsisdn)) {
-    return '0' + validMsisdn.slice(-8);
-  }
   return '0' + validMsisdn.slice(-9);
 }
 
@@ -132,18 +124,14 @@ var valid = function valid(type) {
 
 // normalized MSISDN format: 27849266611
 var msisdnZA = '27[6-8][0-9]{8}';
-var msisdnNam = '264(60|81|83|85)[0-9]{6}';
 
 // any format a human might write (excluding brackets and spaces)
 // 0849266611 / +278492666111 / 0027 etc etc
 var mobileZA = '(\\+?(00)?270?|0)[6-8][0-9]{8}';
-var mobileNam = '(\\+?(00)?2640?|0)(60|81|83|85)[0-9]{6}';
-
-var mobileNamPattern = new RegExp('^' + mobileNam + '$');
 
 var pattern = {
-  msisdn: new RegExp('^(' + msisdnZA + '|' + msisdnNam + ')$'),
-  mobile: new RegExp('^(' + mobileZA + '|' + mobileNam + ')$'),
+  msisdn: new RegExp('^(' + msisdnZA + ')$'),
+  mobile: new RegExp('^(' + mobileZA + ')$'),
 
   // YYYY-MM-DD, with years limited to 1900-2100
   isoDate: /^(19|20|21)\d\d-[0|1]\d-[0-3]\d$/,
@@ -152,4 +140,5 @@ var pattern = {
   humanDate: /^[0-3]\d\/[0|1]\d\/(19|20|21)\d\d$/,
 
   // http://stackoverflow.com/questions/46155/validate-email-address-in-javascript
-  email: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/ };
+  email: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+};

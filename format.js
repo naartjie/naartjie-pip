@@ -3,11 +3,12 @@
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
+
+var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
+
 exports.isoToHuman = isoToHuman;
 exports.humanToIso = humanToIso;
 exports.parseHumanDate = parseHumanDate;
-
-function _slicedToArray(arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }
 
 var _validate = require('./validate');
 
@@ -22,7 +23,7 @@ function isoToHuman(date) {
   var month = _date$split2[1];
   var day = _date$split2[2];
 
-  return '' + day + '/' + month + '/' + year;
+  return day + '/' + month + '/' + year;
 }
 
 function humanToIso(date) {
@@ -34,7 +35,7 @@ function humanToIso(date) {
   var month = _date$split32[1];
   var year = _date$split32[2];
 
-  return '' + year + '-' + month + '-' + day;
+  return year + '-' + month + '-' + day;
 }
 
 function parseHumanDate(date) {
